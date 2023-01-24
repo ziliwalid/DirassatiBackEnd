@@ -1,0 +1,11 @@
+RewriteCond %{HTTP:Authorization} .+
+              RewriteRule ^ - [E=HTTP_AUTHORIZATION:%0]
+             
+              A sample .htaccess file:
+              RewriteEngine On
+              RewriteCond %{HTTP:Authorization} .+
+              RewriteRule ^ - [E=HTTP_AUTHORIZATION:%0]
+              RewriteCond %{REQUEST_FILENAME} !-f
+              RewriteRule ^(.*)$ app.php [QSA,L]
+              Header add Access-Control-Allow-Origin "*"
+              Header add Access-Control-Allow-Methods: "GET,POST,OPTIONS,DELETE,PUT"
