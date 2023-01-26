@@ -115,6 +115,7 @@ Route::get('showAdministratif/{id}',[AdministratifController::class,'show']);
 Route::delete('deleteAdministratif/{id}',[AdministratifController::class,'destroy']);
 Route::put('updateAdministratif/{id}',[AdministratifController::class,'update']);
 Route::get('getAdministratifData/{id}',[AdministratifController::class,'getAdministratifData']);
+Route::get('getAllAdministratifData',[AdministratifController::class,'getAllAdministratifData']);
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

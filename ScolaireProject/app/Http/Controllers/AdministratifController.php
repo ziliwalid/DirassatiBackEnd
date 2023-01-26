@@ -57,12 +57,12 @@ class AdministratifController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
-        
+
 
 
         $User = User::SaveUser($request,'Admin');
         $dataUser = User::where('email',$request->email)->get();
-        
+
         $Administratifs=new administratif();
         $Administratifs->fonction = $request->fonction;
         $Administratifs->user_id =$dataUser[0]->id;
@@ -71,7 +71,7 @@ class AdministratifController extends Controller
         return response()->json(['Administratifs'=>$Administratifs,"user"=>$User]);
 
 
-        
+
 
 
     }
@@ -86,7 +86,7 @@ class AdministratifController extends Controller
     {
         $Administratifs = administratif::find($id);
         return response()->json($Administratifs);
-        
+
     }
 
     /**
@@ -109,7 +109,7 @@ class AdministratifController extends Controller
      */
     public function update(Request $request,$id)
     {
-        
+
         $Administratifs=administratif::find($id);
         $user=User::UpdateUser($Administratifs->user_id, $request);
 
@@ -132,7 +132,7 @@ class AdministratifController extends Controller
         $User = User::find($Administratifs->user_id);
         $User->delete();
         $Administratifs->delete();
-        
+
         return response()->json($Administratifs);
     }
     public function getAdministratifData($id){
@@ -141,5 +141,13 @@ class AdministratifController extends Controller
         ->get();
         return response()->json($Etudiant);
 
+    }
+    public function getAllAdministratifData(){
+        $Administratifs = User::join('administratifs', 'users.id', '=', 'administratifs.user_id')
+        ->select('administratifs.id','nom', 'prenom','adress',
+        'sexe','email','type','fonction','user_id'
+        )
+        ->get();
+        return response()->json($Administratifs);
     }
 }

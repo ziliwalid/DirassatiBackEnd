@@ -15,7 +15,7 @@ class CourController extends Controller
     public function index()
     {
         $Cour = cour::all();
-        return response()->json($Cour); 
+        return response()->json($Cour);
     }
 
     /**
@@ -43,13 +43,13 @@ class CourController extends Controller
 
         $Cour->groupe_id = $request->groupe_id;
 
-        $Cour->module_id = $request->module_id;
+        $Cour->Module = $request->Module;
         $Cour->enseigant_id = $request->enseigant_id;
         $Cour->save();
 
 
-        
-        return response()->json($Cour); 
+
+        return response()->json($Cour);
     }
 
     /**
@@ -61,7 +61,7 @@ class CourController extends Controller
     public function show($id)
     {
         $Cour = cour::find($id);
-        return response()->json($Cour); 
+        return response()->json($Cour);
     }
 
     /**
@@ -91,10 +91,10 @@ class CourController extends Controller
 
         $Cour->groupe_id = $request->groupe_id;
 
-        $Cour->module_id = $request->module_id;
+        $Cour->Module = $request->Module;
         $Cour->enseigant_id = $request->enseigant_id;
         $Cour->save();
-        return response()->json($Cour); 
+        return response()->json($Cour);
 
     }
 
@@ -108,20 +108,20 @@ class CourController extends Controller
     {
         $Cour = cour::find($id);
         $Cour->delete();
-        return response()->json($Cour); 
+        return response()->json($Cour);
     }
     public function getCourModuleEnseignant(){
-        $Cour = cour::join('modules','modules.id','=','module_id')
-        ->join('enseigants','enseigants.id','=','enseigant_id')
-        ->join('groupes','groupes.id','=','groupe_id')
-        ->join('formations','formations.id','=','formation_id')
+        $Cour = cour::join('enseigants','enseigants.id','=','enseigant_id')
+            ->join('groupes','groupes.id','=','groupe_id')
+            ->join('niveaux', 'niveaux.id', '=', 'niveaux_id')
 
-        ->select('cours.id as cours_id','nom_cours', 'anne',
-        'groupe_id','module_id','enseigant_id','nom_modules','volume_horaire',
-        'formation_id','grade','specialite','user_id','nom_groupe','niveaux_id',
-        'designation_Formation','domaine','frais_formation')
+            ->join('formations','formations.id','=','formation_id')
+            ->select('cours.id as cours_id','nom_cours', 'anne',
+                'groupe_id','enseigant_id',
+                'formation_id','grade','specialite','user_id','nom_groupe','niveaux_id',
+                'designation_Formation','domaine','frais_formation','Module')
 
-        ->get();
-        return response()->json($Cour); 
+            ->get();
+        return response()->json($Cour);
     }
 }

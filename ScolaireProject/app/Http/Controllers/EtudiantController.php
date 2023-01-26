@@ -63,6 +63,7 @@ class EtudiantController extends Controller
         $Etudiant = new Etudiant();
         $Etudiant->cne = $request->cne;
         $Etudiant->user_id = $dataUser[0]->id;
+        $Etudiant->groupe_id = $request->groupe_id;
         $Etudiant->save();
         return response()->json(['etudiant' => $Etudiant, "user" => $User]);
 
@@ -122,6 +123,7 @@ class EtudiantController extends Controller
         $Etudiant = Etudiant::find($id);
         $user = User::UpdateUser($Etudiant->user_id, $request);
         $Etudiant->cne = $request->cne;
+        $Etudiant->groupe_id = $request->groupe_id;
         $Etudiant->save();
         return response()->json(['Etudiant' => $Etudiant, 'user' => $user]);
 
@@ -154,8 +156,9 @@ class EtudiantController extends Controller
     }
     public function getAllEtudiantData(){
         $Etudiant = User::join('etudiants', 'users.id', '=', 'etudiants.user_id')
+            ->join('groupes','groupes.id','=','groupe_id')
             ->select('etudiants.id','nom', 'prenom','adress',
-                'sexe','email','type','cne','user_id'
+                'sexe','email','type','cne','user_id','nom_groupe'
             )
 
             ->get();
